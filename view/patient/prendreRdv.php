@@ -15,7 +15,7 @@ require_once ROOT . 'controller/creneau/selectCreneauController.php';
   <section class="rdv-section">
     <h2>📅 Prendre un rendez-vous</h2>
 
-    <form action="index.php?page=rdvPatient" method="POST" class="rdv-form">
+    <form action="index.php?page=controllerRdv" method="POST" class="rdv-form">
       <div class="rdv-form-group">
         <label for="id_creneau">Créneau disponible <span class="required">*</span></label>
         <select id="id_creneau" name="id_creneau" required>

@@ -11,7 +11,7 @@ if (empty($_SESSION['user'])) {
         <h2>Bienvenue sur MedInfo</h2>
         <p>Votre plateforme officielle du Centre Médical Ramsay Saint‑Lazare pour prendre rendez-vous en ligne,
            simple, rapide et sécurisée.</p>
-        <button class="btn-primary">Prendre rendez-vous</button>
+        <button class="btn-primary"><a style="text-decoration:none;color:white"href="index.php?page=connexion">Prendre rendez-vous</a></button>
     </section>
 
     <section class="specialites">

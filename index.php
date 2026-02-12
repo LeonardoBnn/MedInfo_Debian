@@ -9,6 +9,9 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'Accueil';
 
 switch($page){
 
+    case 'accueil' :
+        require_once("view/accueil.php");
+        break;
     case 'dashboardMedecin' :
         require_once("view/medecin/dashboardMedecin.php");
         break;
@@ -73,7 +76,7 @@ switch($page){
         break;
     case 'deconnexion':
         session_destroy();
-        header('Location:https://127.0.0.1/promo300/medinfo/index.php?page=accueil');
+        header('Location:http://127.0.0.1/promo300/medinfo/index.php?page=accueil');
         break;
 }
 

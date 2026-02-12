@@ -30,6 +30,8 @@ class RdvController {
     }
 
     public function create() {
+      //  var_dump($_POST);
+    //    die();
         $this->rdv->ajouterRdv(
             $_POST['motif'], 
             $_POST['origine'], 
@@ -37,14 +39,14 @@ class RdvController {
             $_POST['id_creneau']
         );
 
-        header('Location:https://127.0.0.1/promo300/medinfo/index.php?page=rdvPatient');
+        header('Location:http://127.0.0.1/promo300/medinfo/index.php?page=rdvPatient');
         exit;
     }
 
     public function delete() {
         $this->rdv->supprimerRdv($_POST['id_rdv']);
 
-        header('Location:https://127.0.0.1/promo300/medinfo/index.php?page=rdvPatient');
+        header('Location:http://127.0.0.1/promo300/medinfo/index.php?page=rdvPatient');
         exit;
     }
 
