@@ -113,6 +113,15 @@
     transform: scale(1.05);
 }
 
+.specialite-list li a {
+    text-decoration: none;
+    color: inherit; /* garde la couleur du texte du li */
+    display: block; /* permet de cliquer sur toute la zone */
+    width: 100%;
+    height: 100%;
+}
+
+
 /* Étapes */
 .steps {
     display: flex;
