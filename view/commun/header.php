@@ -21,6 +21,8 @@
     <link rel="stylesheet" href="public/styles.consultations.css">
     <link rel="stylesheet" href="public/styles.rdvMedecin.css">
     <link rel="stylesheet" href="public/styles.rdv.css">
+    <link rel="stylesheet" href="public/styles.profil.css">
+    <link rel="stylesheet" href="public/styles.RGPD.css">
 
     <title>MedInfo</title>
 </head>

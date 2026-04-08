@@ -72,6 +72,18 @@ switch($page){
     case 'mesConsultations' :
         require_once("view/patient/consultationPatient.php");
         break;
+    case 'CGU':
+        require_once 'view/RGPD/CGU.php';
+        break;
+
+    case 'politiquesConfidentialite':
+        require_once 'view/RGPD/politiqueConfidentialite.php';
+        break;
+
+    case 'mentionsLegales':
+        require_once 'view/RGPD/mentionsLegales.php';
+        break;
+
 
 
     default:
