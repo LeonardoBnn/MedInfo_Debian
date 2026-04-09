@@ -138,6 +138,42 @@ Class Rendez_vous{
 
         return $req->execute();
     }
+
+    // Récupérer les créneaux libres d'un médecin, filtrables par date
+    public function getCreneauxDispoByMedecin($id_medecin, $date = null) {
+        $sql = "SELECT c.id_creneau, c.date_heure_debut, c.date_heure_fin, s.libelle AS salle_libelle
+                FROM creneau c
+                INNER JOIN salle s ON c.fk_id_salle = s.id_salle
+                WHERE c.fk_id_medecin = :id_medecin AND c.statut = 'libre'";
+
+        // Si une date est choisie dans le filtre, on l'ajoute à la requête
+        if ($date != null) {
+            $sql .= " AND DATE(c.date_heure_debut) = :date";
+        }
+        $sql .= " ORDER BY c.date_heure_debut ASC";
+
+        $req = $this->bdd->prepare($sql);
+        $req->bindParam(':id_medecin', $id_medecin);
+        if ($date != null) {
+            $req->bindParam(':date', $date);
+        }
+        $req->execute();
+        return $req->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Récupérer les informations d'un créneau spécifique pour le récapitulatif
+    public function getCreneauInfos($id_creneau) {
+        $req = $this->bdd->prepare("
+            SELECT c.date_heure_debut, mu.nom AS medecin_nom, mu.prenom AS medecin_prenom
+            FROM creneau c
+            INNER JOIN medecin m ON c.fk_id_medecin = m.id_medecin
+            INNER JOIN utilisateur mu ON m.fk_id_utilisateur = mu.id_utilisateur
+            WHERE c.id_creneau = :id_creneau
+        ");
+        $req->bindParam(':id_creneau', $id_creneau);
+        $req->execute();
+        return $req->fetch(PDO::FETCH_ASSOC);
+    }
 }
 
 
