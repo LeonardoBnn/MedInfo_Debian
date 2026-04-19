@@ -2,9 +2,10 @@
 
 require_once ROOT . 'bdd/bdd.php';
 require_once ROOT . 'model/rendez_vous/model.rdv.php';
+    
+$rdvController = new RdvController($bdd);
 
 if (isset($_POST['action'])) {
-    $rdvController = new RdvController($bdd);
 
     switch ($_POST['action']) {
         case 'ajouter':
@@ -17,6 +18,12 @@ if (isset($_POST['action'])) {
 
         // Tu pourras ajouter d'autres cas si besoin (modifier, annuler, etc.)
     }
+}
+
+if(isset($_GET['action'])){
+        
+    $rdvController->updateRdv($_GET['id_rdv'], $_GET['action']);
+
 }
 
 
@@ -47,6 +54,14 @@ class RdvController {
         $this->rdv->supprimerRdv($_POST['id_rdv']);
 
         header('Location:http://127.0.0.1/promo300/medinfo/index.php?page=rdvPatient');
+        exit;
+    }
+
+    public function updateRdv($rdv_id, $rdvStatut){
+
+        $this->rdv->updateRdvStatus($rdv_id, $rdvStatut);
+
+        header('Location:http://127.0.0.1/promo300/medinfo/index.php?page=gestionRdv');
         exit;
     }
 
