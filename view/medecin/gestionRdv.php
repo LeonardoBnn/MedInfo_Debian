@@ -1,53 +1,16 @@
 <?php
-// -------------------------------------------------------------------
-// PARTIE 1 : SIMULATION DES DONNÉES (À remplacer par ta requête SQL)
-// -------------------------------------------------------------------
-$rendezVousList = [
-    [
-        'id' => 101,
-        'heure' => '09:00',
-        'patient' => 'Jean Dupont',
-        'email' => 'jean.dupont@email.com',
-        'motif' => 'Suivi cardiologique',
-        'statut' => 'a_confirmer',
-        'type' => 'Consultation'
-    ],
-    [
-        'id' => 102,
-        'heure' => '10:30',
-        'patient' => 'Sophie Martin',
-        'email' => 's.martin@test.fr',
-        'motif' => 'Vaccination grippe',
-        'statut' => 'confirme',
-        'type' => 'Soins infirmiers'
-    ],
-    [
-        'id' => 103,
-        'heure' => '11:15',
-        'patient' => 'Marc Alibert',
-        'email' => 'm.alibert@domaine.com',
-        'motif' => 'Douleurs abdominales',
-        'statut' => 'annule',
-        'type' => 'Urgence'
-    ],
-    [
-        'id' => 104,
-        'heure' => '14:00',
-        'patient' => 'Lucie Bernard',
-        'email' => 'lucie.b@email.com',
-        'motif' => 'Renouvellement ordonnance',
-        'statut' => 'honore',
-        'type' => 'Consultation'
-    ]
-];
+
+require_once ROOT . 'controller/rendez_vous/readRdvMedecins.php';
+//var_dump($rendezVousList);
+//die();
 
 // Fonction utilitaire pour le style des badges (basé sur styles.agenda.css)
 function getStatusClass($statut) {
     switch ($statut) {
-        case 'confirme': return 'rdv-status--confirmé';
+        case 'confirmé': return 'rdv-status--confirmé';
         case 'a_confirmer': return 'rdv-status--a_confirmer';
-        case 'annule': return 'rdv-status--annulé';
-        case 'honore': return 'rdv-status--honoré';
+        case 'annulé': return 'rdv-status--annulé';
+        case 'honoré': return 'rdv-status--honoré';
         default: return 'rdv-status--absent';
     }
 }
@@ -55,10 +18,10 @@ function getStatusClass($statut) {
 // Fonction pour l'affichage propre du texte
 function getStatusLabel($statut) {
     $labels = [
-        'confirme' => 'Confirmé',
-        'a_confirmer' => 'À Confirmer',
-        'annule' => 'Annulé',
-        'honore' => 'Honoré'
+        'confirmé' => 'confirmé',
+        'a_confirmer' => 'à confirmer',
+        'annulé' => 'annulé',
+        'honoré' => 'honoré'
     ];
     return $labels[$statut] ?? 'Inconnu';
 }
@@ -92,13 +55,13 @@ function getStatusLabel($statut) {
                         <tr>
                             <td data-label="Heure">
                                 <div class="date-badge">
-                                    <span><?php echo $rdv['heure']; ?></span>
+                                    <span><?php echo $rdv['heure_debut_formatee']; ?></span>
                                 </div>  
                             </td>
 
                             <td data-label="Patient">
                                 <span style="font-weight: 600; color: var(--medinfo-primary);">
-                                    <?php echo htmlspecialchars($rdv['patient']); ?>
+                                    <?php echo htmlspecialchars($rdv['patient_prenom'] ." ". $rdv['patient_nom']); ?>
                                 </span>
                             </td>
 
@@ -110,7 +73,7 @@ function getStatusLabel($statut) {
                             </td>
 
                             <td data-label="Contact">
-                                <a href="mailto:<?php echo $rdv['email']; ?>?subject=Rappel de Rendez-vous - MedInfo" 
+                                <a href="mailto:<?php echo $rdv['patient_email']; ?>?subject=Rappel de Rendez-vous - MedInfo" 
                                    class="btn-icon btn-contact" 
                                    title="Envoyer un email à <?php echo htmlspecialchars($rdv['patient']); ?>">
                                     <span class="material-symbols-outlined">mail</span>
@@ -118,36 +81,38 @@ function getStatusLabel($statut) {
                             </td>
 
                             <td data-label="Statut">
-                                <span class="rdv-status <?php echo getStatusClass($rdv['statut']); ?>">
-                                    <?php echo getStatusLabel($rdv['statut']); ?>
+                                <?php //var_dump($rdv['rdv_statut']); ?>
+                                <span class="rdv-status <?php echo getStatusClass($rdv['rdv_statut']); ?>">
+                                    <?php echo getStatusLabel($rdv['rdv_statut']); ?>
                                 </span>
                             </td>
 
                             <td data-label="Actions">
                                 <div class="action-btn-group">
-                                    <?php if ($rdv['statut'] === 'a_confirmer'): ?>
-                                        <a href="actions_rdv.php?action=confirmer&id=<?php echo $rdv['id']; ?>" 
+                                    <?php if ($rdv['rdv_statut'] === 'a_confirmer'): ?>
+                                        <a href="index.php?page=controllerRdv&action=confirmé&id_rdv=<?php echo $rdv['id_rdv']; ?>" 
                                            class="btn-icon btn-confirm" title="Confirmer">
                                             <span class="material-symbols-outlined">check</span>
                                         </a>
                                     <?php endif; ?>
 
-                                    <?php if ($rdv['statut'] !== 'annule' && $rdv['statut'] !== 'honore'): ?>
-                                        <a href="actions_rdv.php?action=honorer&id=<?php echo $rdv['id']; ?>" 
+                                    <?php if ($rdv['rdv_statut'] !== 'annulé' && $rdv['rdv_statut'] !== 'honoré'): ?>
+                                        <a href="index.php?page=controllerRdv&action=honoré&id_rdv=<?php echo $rdv['id_rdv']; ?>" 
                                            class="btn-icon btn-honor" title="Marquer comme honoré">
                                             <span class="material-symbols-outlined">assignment_turned_in</span>
                                         </a>
                                         
-                                        <a href="actions_rdv.php?action=annuler&id=<?php echo $rdv['id']; ?>" 
+                                        <a href="index.php?page=controllerRdv&action=annulé&id_rdv=<?php echo $rdv['id_rdv']; ?>" 
                                            class="btn-icon btn-cancel" title="Annuler">
                                             <span class="material-symbols-outlined">close</span>
                                         </a>
                                     <?php endif; ?>
-                                    
-                                    <a href="details_rdv.php?id=<?php echo $rdv['id']; ?>" 
+                                    <!--
+                                    <a href="index.php?page=controllerRdv&id_rdv=<?php echo $rdv['id_rdv']; ?>" 
                                        class="btn-icon" title="Voir détails">
                                         <span class="material-symbols-outlined">visibility</span>
                                     </a>
+                                    -->
                                 </div>
                             </td>
                         </tr>

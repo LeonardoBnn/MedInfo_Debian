@@ -77,7 +77,8 @@ Class Rendez_vous{
             s.etage AS salle_etage,
             -- Alias pour le patient (ce que le médecin veut voir)
             pu.nom AS patient_nom,
-            pu.prenom AS patient_prenom
+            pu.prenom AS patient_prenom,
+            pu.email as patient_email
             
         FROM 
             rendez_vous rdv
@@ -132,7 +133,7 @@ Class Rendez_vous{
 
     public function supprimerRdv($id_rdv){
 
-        $req = $this->bdd->prepare("DELETE * FROM rendez_vous WHERE id_rdv = :id_rdv");
+        $req = $this->bdd->prepare("DELETE rendez_vous WHERE id_rdv = :id_rdv");
 
         $req->bindparam(':id_rdv', $id_rdv);
 
@@ -173,6 +174,16 @@ Class Rendez_vous{
         $req->bindParam(':id_creneau', $id_creneau);
         $req->execute();
         return $req->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // Fonctions pour les actions du tableau de gestion des rdv
+    public function updateRdvStatus($rdv_id, $rdvStatut){
+
+        $req = $this->bdd->prepare("UPDATE rendez_vous SET statut = :rdvStatut where id_rdv = :rdv_id");
+        $req->bindParam(':rdvStatut', $rdvStatut);
+        $req->bindParam(':rdv_id', $rdv_id);
+
+        return $req->execute();
     }
 }
 

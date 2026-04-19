@@ -88,6 +88,9 @@ switch($page){
     case 'listeMedecins':
         require_once 'view/patient/listeMedecins.php';
         break;
+    case 'controllerRdv':
+        require_once 'controller/rendez_vous/controller.rdv.php';
+        break;
 
 
     default:
