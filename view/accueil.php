@@ -95,6 +95,34 @@ if (empty($_SESSION['user'])) {
         <p>Bienvenue dans votre espace professionnel du Centre Médical Ramsay Saint‑Lazare.</p>
     </section>
 
+    <section class="mini-agenda">
+    <h3>Agenda du jour</h3>
+
+        <?php if (!empty($rdvMedecins)): ?>
+            <ul class="mini-agenda-list">
+                <?php foreach ($rdvMedecins as $rdv): ?>
+                    <li class="mini-agenda-item mini-agenda-item--<?= $rdv['rdv_statut'] ?>">
+                        <span class="mini-time"><?= $rdv['heure_debut_formatee'] ?></span>
+                        <span class="mini-name"><?= $rdv['patient_prenom'] . ' ' . $rdv['patient_nom'] ?></span>
+                        <span class="mini-status"><?= match($rdv['rdv_statut']) {
+                            'confirmé' => 'Confirmé',
+                            'a_confirmer' => 'À confirmer',
+                            'annulé' => 'Annulé',
+                            'honoré' => 'Honoré',
+                            'absent' => 'Absent'
+                        } ?></span>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+
+            <a href="index.php?page=agenda" class="mini-agenda-link">Voir l’agenda complet</a>
+
+        <?php else: ?>
+            <p class="mini-agenda-empty">Aucun rendez-vous prévu aujourd’hui.</p>
+        <?php endif; ?>
+    </section>
+
+
     <section class="dashboard medecin-dashboard">
         <h3>Mes outils</h3>
         <div class="actions-grid">

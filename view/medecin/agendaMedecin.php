@@ -7,7 +7,10 @@ require_once ROOT . 'controller/rendez_vous/readRdvMedecins.php';
 <div class="medinfo-agenda-section">
     <div class="medinfo-agenda-header">
         <h2>🗓️ Mon Agenda du Jour</h2>
-        <p class="medinfo-agenda-date">Mardi 10 Décembre 2025</p>
+        <p class="medinfo-agenda-date">
+            <?= ucfirst($formatter->format(new DateTime())); ?>
+        </p>
+
     </div>
 
     <div class="medinfo-rdv-list">
