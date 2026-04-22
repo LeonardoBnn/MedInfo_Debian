@@ -19,9 +19,7 @@ if(isset($_POST['action'])){
             break;
         case '':
             break;
-
-        case 'modifier':
-            $medecinController->update();
+        case '':
             break;
         case 'connexion':
             $medecinController->Login();
@@ -127,33 +125,5 @@ class medecinController{
             header("Location: index.php?page=reinitialisation&token=" . urlencode($token));
             exit;
         }
-    }
-
-    public function update()
-    {
-        $id_utilisateur = $_SESSION['user']['id_utilisateur'];
-        $id_medecin = $_SESSION['user']['id_medecin'];
-
-        // 1) Mise à jour médecin
-        $this->medecin->updateMedecin(
-            $_POST['nom'],
-            $_POST['prenom'],
-            $_POST['email'],
-            $_POST['tel'],
-            $_POST['description'],
-            $id_medecin,
-            $id_utilisateur
-        );
-
-        // 2) Mise à jour session
-        $_SESSION['user']['nom'] = $_POST['nom'];
-        $_SESSION['user']['prenom'] = $_POST['prenom'];
-        $_SESSION['user']['email'] = $_POST['email'];
-        $_SESSION['user']['telephone'] = $_POST['tel'];
-        $_SESSION['user']['description'] = $_POST['description'];
-
-        // 3) Redirection profil
-        header("Location: index.php?page=profil");
-        exit;
     }
 }
